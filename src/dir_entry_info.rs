@@ -1,6 +1,7 @@
 use std::path::{PathBuf, Path};
 use tokio::fs::{self, ReadDir};
 use std::collections::VecDeque;
+use log::info;
 use crate::dir_entry_data::DirEntryData;
 
 pub(crate) struct DirEntryInfo {
@@ -61,6 +62,8 @@ pub(crate) async fn scan_directory<P: AsRef<Path>>(root: P) -> Result<Vec<DirEnt
     queue.push_back(root.clone());
 
     while let Some(dir) = queue.pop_front() {
+
+        info!("scanning dir: {:?}", dir);
 
         result.push(DirEntryInfo::new(&dir).await?);
 
